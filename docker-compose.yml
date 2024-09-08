@@ -22,8 +22,7 @@ services:
         max-size: "10m"
 
   redis:
-    build:
-      context: ./redis/
+    image: redis:latest
     ports:
       - 127.0.0.1:6380:6379
     logging:

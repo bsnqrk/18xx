@@ -1,13 +1,12 @@
-FROM postgres:14.1
+FROM postgres:14
 
-# use uid 1000 to (hopefully) match host user (ie, you)
-RUN useradd --uid 1000 --user-group --create-home --home-dir /home/db db
+ENV POSTGRES_USER postgres
+ENV POSTGRES_MAX_CONNECTIONS 100
+ENV POSTGRES_SHARED_BUFFERS "256MB"
 
-RUN chown db:db /var/lib/postgresql/data && \
-    chown db:db /var/run/postgresql
+COPY entrypoint.sh /startup/
 
-USER db:db
+RUN chown -R postgres:postgres /var/lib/postgresql
 
-COPY ./postgresql.conf /etc/postgresql/postgresql.conf
+ENTRYPOINT ["/startup/entrypoint.sh"]
 
-CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]

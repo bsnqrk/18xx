@@ -29,3 +29,5 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
       POSTGRES_DB: 18xx_development
+      POSTGRES_MAX_CONNECTIONS: 100
+      POSTGRES_SHARED_BUFFERS: "256MB"

@@ -3,10 +3,10 @@ CONTAINER_COMPOSE ?= $(CONTAINER_ENGINE)-compose
 CONTAINER_ENGINE ?= docker
 
 clean:
-	sudo rm -rfv build/ public/assets/*.js public/assets/*.js.gz public/assets/version.json
+	rm -rfv build/ public/assets/*.js public/assets/*.js.gz public/assets/version.json
 
 cleandeps:
-	sudo rm -rfv public/assets/deps.js
+	rm -rfv public/assets/deps.js
 
 # ensure ./db/data exists and is not owned by root
 data_dir:
@@ -28,9 +28,9 @@ prod_link : clean_link
 dev_build : dev_link data_dir
 	$(CONTAINER_COMPOSE) build
 dev_up : dev_link data_dir
-	$(CONTAINER_COMPOSE) up
+	$(CONTAINER_COMPOSE) up --detach
 dev_up_b : dev_link data_dir
-	$(CONTAINER_COMPOSE) up --build
+	$(CONTAINER_COMPOSE) up --detach --build
 
 # prod config, run locally
 prod_build : prod_link data_dir ensure_prod_env

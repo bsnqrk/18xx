@@ -13,6 +13,15 @@ module Engine
         include G1836::Entities
         include G1836::Map
 
+        register_colors(red: '#d1232a',
+                        orange: '#f58121',
+                        black: '#110a0c',
+                        blue: '#025aaa',
+                        lightBlue: '#8dd7f6',
+                        yellow: '#ffe600',
+                        green: '#32763f',
+                        brightGreen: '#6ec037')
+
         GAME_END_CHECK = { bankrupt: :immediate, bank: :current_or }.freeze
 
         CURRENCY_FORMAT_STR = '%sM'

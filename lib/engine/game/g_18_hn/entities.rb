@@ -2,7 +2,7 @@
 
 module Engine
   module Game
-    module G1836
+    module G18HN
       module Entities
         COMPANIES = [
           {
@@ -131,7 +131,7 @@ module Engine
             float_percent: 50,
             sym: 'WEG',
             name: 'Wiesbadener Eisenbahn-Gesellschaft',
-            logo: '1836/WEG',
+            logo: '18_hn/WEG',
             tokens: [0, 40, 100],
             coordinates: 'J9',
             color: :lightBlue,
@@ -141,7 +141,7 @@ module Engine
             float_percent: 50,
             sym: 'LTB',
             name: 'Lahntalbahn',
-            logo: '1836/LTB',
+            logo: '18_hn/LTB',
             tokens: [0, 40, 100],
             coordinates: 'H7',
             color: :orange,
@@ -151,7 +151,7 @@ module Engine
             float_percent: 50,
             sym: 'MNB',
             name: 'Main-Neckar-Bahn',
-            logo: '1836/MNB',
+            logo: '18_hn/MNB',
             tokens: [0, 40, 100],
             coordinates: 'N11',
             color: :blue,
@@ -160,7 +160,7 @@ module Engine
             float_percent: 50,
             sym: 'SB',
             name: 'Starkenburger Bahn',
-            logo: '1836/SB',
+            logo: '18_hn/SB',
             tokens: [0, 40, 100],
             coordinates: 'L11',
             color: :gray,
@@ -169,7 +169,7 @@ module Engine
             float_percent: 50,
             sym: 'HLB',
             name: 'Hessische Ludwigseisenbahn',
-            logo: '1836/HLB',
+            logo: '18_hn/HLB',
             tokens: [0, 40, 100],
             coordinates: 'K8',
             color: :white,
@@ -179,7 +179,7 @@ module Engine
             float_percent: 50,
             sym: 'VB',
             name: 'Vogelsbergbahn',
-            logo: '1836/VB',
+            logo: '18_hn/VB',
             tokens: [0, 40, 100],
             coordinates: 'F17',
             color: :brown,
@@ -188,7 +188,7 @@ module Engine
             float_percent: 50,
             sym: 'MWB',
             name: 'Main-Weser-Bahn',
-            logo: '1836/MWB',
+            logo: '18_hn/MWB',
             tokens: [0, 40, 100],
             coordinates: 'F13',
             color: :red,
@@ -197,7 +197,7 @@ module Engine
             float_percent: 50,
             sym: 'FWN',
             name: 'Friedrich-Wilhelm-Nordbahn',
-            logo: '1836/FWN',
+            logo: '18_hn/FWN',
             tokens: [0, 40, 100],
             coordinates: 'C18',
             color: :lightgreen,
@@ -206,7 +206,7 @@ module Engine
             float_percent: 50,
             sym: 'FHB',
             name: 'Fulda-Hanauer Bahn',
-            logo: '1836/FHB',
+            logo: '18_hn/FHB',
             tokens: [0, 0, 40],
             coordinates: %w[G20 J15],
             color: :purple,
@@ -215,7 +215,7 @@ module Engine
             float_percent: 50,
             sym: 'WLB',
             name: 'Waldeck\'sche Landesbahn',
-            logo: '1836/WLB',
+            logo: '18_hn/WLB',
             tokens: [0, 40, 100],
             coordinates: 'C14',
             color: :yellow,

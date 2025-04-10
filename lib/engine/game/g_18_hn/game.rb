@@ -7,11 +7,11 @@ require_relative '../base'
 
 module Engine
   module Game
-    module G1836
+    module G18HN
       class Game < Game::Base
-        include_meta(G1836::Meta)
-        include G1836::Entities
-        include G1836::Map
+        include_meta(G18HN::Meta)
+        include G18HN::Entities
+        include G18HN::Map
 
         register_colors(red: '#d1232a',
                         orange: '#f58121',

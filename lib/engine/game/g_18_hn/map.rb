@@ -2,7 +2,7 @@
 
 module Engine
   module Game
-    module G1836
+    module G18HN
       module Map
         LAYOUT = :pointy
 

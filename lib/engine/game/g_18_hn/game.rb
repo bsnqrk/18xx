@@ -163,6 +163,36 @@ module Engine
             ],
           },
         ].freeze
+        
+        def seidler_variant?
+          @seidler_variant ||= @optional_rules&.include?(:Seidler)
+        end
+        
+        def initial_auction_companies
+          @companies.select { |company| company.meta[:start_packet] }
+        end
+
+        def init_companies(_players)
+          companies = super
+          companies.reject! { |c| c.sym == 'SS' } unless seidler_variant?
+          companies
+        end
+
+        def cash_by_options
+          case seidler_variant?
+          when true
+            { 3 => 810, 4 => 610, 5 => 510 }
+          else
+            { 3 => 800, 4 => 600, 5 => 500 }
+          end
+        end
+
+        def init_starting_cash(players, bank)
+          cash = cash_by_options[players.size]
+          players.each do |player|
+            bank.spend(cash, player)
+          end
+        end      
 
         def setup_preround
           # Make sure the start player order is randomized

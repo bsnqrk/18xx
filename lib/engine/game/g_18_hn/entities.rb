@@ -6,170 +6,244 @@ module Engine
       module Entities
         COMPANIES = [
           {
-            sym: 'P1',
             name: 'Homburger Bahn',
+            sym: 'HB',
             value: 20,
             revenue: 5,
-            desc: 'With begin of the brown phase, the owner immediately may lay the brown tile #939 on hex J10 (Bad Homburg) ' \
-                  'for free.',
-            abilities: [
-              {
-                type: 'tile_lay',
-                hexes: %w[J10],
-                tiles: %w[939],
-                owner_type: 'corporation',
-                on_phase: '5',
-                special: true,
-                count: 1,
-                free: true,
-              },
-           ],
+            desc: 'lay free special tile in Bad Homburg with the first 5-Train.',
+            abilities: [{ type: 'blocks_hexes', owner_type: 'player', hexes: ['I10'] },
+            {
+              type: 'tile_lay',
+              owner_type: 'player',
+              hexes: ['I10'],
+              tiles: '939',
+              when: 'any',
+              count: 1,
+            }],
+            color: nil,
+            meta: { start_packet: true },
           },
           {
-            sym: 'P2',
-            name: 'Baugesellschaft Rheinbrücken',
+            name: 'Seidler & Siebrecht',
+            sym: 'SS',
+            value: 30,
+            revenue: 10,
+            desc: 'Close this private for reducing the cost of a tile lay to 0M.',
+            abilities: [
+                        {
+                          type: 'tile_lay',
+                          owner_type: 'player',
+                          hexes: 'any',
+                          tiles: 'yellow',
+                          when: 'player',
+                          count: 1,
+                        }],
+            meta: { start_packet: true },
+            color: nil,
+          },
+          {
+            name: 'BG Rheinbrücken',
+            sym: 'BR',
             value: 40,
             revenue: 10,
-            desc: 'Closes at the latest at begin of the brown phase. ' \
-                  'A corporation, in which the owner is a director, can build a Rhine bridge (or Main estuary bridge) before ' \
-                  'the beginning of the brown phase free of charge and in addition to the normal construction action (before ' \
-                  'or after), but a maximum of one per operation round. The bridge must extend the network of the railway ' \
-                  'company using it. This company allows up to two builds for free of a Rhine bridge and closes early by ' \
-                  'building its second free Rhine bridge.',
+            count: 2,
+            desc: 'can build two free bridges, close after the second bridge.',
+            meta: { start_packet: true },
+            color: nil,
+            abilities: [ 
+              {
+                type: 'tile_lay',
+                owner_type: 'player_or_company',
+                hexes: ['K4' 'J5' 'K8' 'J9' 'K10' 'L9' 'N9' 'N11'],
+                tiles: %w[9],
+                when: 'player',
+                count: 4,
+              }
+            ]
+          },
+          {
+            name: 'Frankfurter Lokalbahn AG',
+            sym: 'FL',
+            value: 50,
+            revenue: 0,
+            desc: 'Director may lay one tile in Frankfurt at start of each OR. Owns the concession rights of city passage of Frankfurt',
+            meta: { start_packet: true },
+            abilities: [ 
+              {
+                type: 'tile_lay',
+                owner_type: 'player',
+                hexes: ['J11' 'J13'],
+                tiles: %w[921 922 923 924],
+                when: 'player',
+                count: 4,
+              },
+              { type: 'acquire_company', company: 'FC' },
+            ],            
+            color: nil,
+          },
+          {
+            name: 'Baugesellschaft Edertalsperre',
+            sym: 'BE',
+            value: 60,
+            revenue: 15,
+            desc: 'Exchange for share of WLB and lay free tile in Bad Wildungen.',
+            meta: { start_packet: true },
             abilities: [
               {
                 type: 'tile_lay',
-                hexes: %w[J10],
-                tiles: %w[939],
-                owner_type: 'corporation',
-                on_phase: '5',
-                special: true,
+                owner_type: 'player',
+                hexes: 'D15',
+                tiles: %w[3 4 58],
+                when: 'player',
                 count: 1,
-                free: true,
               },
-              {
-                type: 'tile_lay',
-                hexes: %w[J10],
-                tiles: %w[939],
-                owner_type: 'corporation',
-                on_phase: '5',
-                special: true,
-                count: 1,
-                free: true,
-              },
-            ],
+              { type: 'acquire_company', company: 'WC' },
+            ],            
+            color: nil,
           },
           {
-            sym: 'P3',
-            name: 'Frankfurter Lokalbahnen AG',
-            value: 50,
-            revenue: 10,
-            desc: 'Closes at the start of the brown phase (Frankfurt is built on by the companies from then on). ' \
-                  'May build on one of the two Frankfurt spaces per OR (green only with at the start of phase 3). ' \
-                  'The owner of the FLB also manages Frankfurt\'s right of passage concession. ' \
-                  'As long as the FLB is not closed, each railroad company may acquire such a right of passage once per game ' \
-                  'for 40 M, which is paid to the owner of the FLB. Such a company may then use the local railway line until ' \
-                  'the end of the game. (Frankurt counts as a single station for this purpose. In case of doubt, the higher ' \
-                  'value applies).',
-          },
-          {
-            sym: 'P4',
-            name: 'Baugesellschaft Edertalsperre',
-            value: 60,
-            revenue: 15,
-            desc: 'Spezialfertigkeit: kann ab der grünen Phase gegen 10% WLB eingetauscht werden, muss dann kostenlos sofort ' \
-                  'als Sonder-Gleisbau das Feld Bad Wildungen gelb bebauen. Sie muss am Ende der OR getauscht werden, in der ' \
-                  'Bad Wildungen anderweitig bebaut wird, spätestens jedoch mit Beginn der braunen Phase inklusive des ' \
-                  'Sonder-Gleisbaus, was mitten in der OR wäre (wobei dann die Austauschaktie in der laufenden OR noch keine ' \
-                  'Dividende durch Ausschütten erhält), selbst wenn zu einem solchen Zeitpunkt die WLB noch nicht gegründet ' \
-                  'worden ist. Geht die WLB durch den letzteren Fall in Betrieb, operiert sie erstmals in der folgenden OR. ' \
-                  'Der Besitzer der Baugesellschaft Edertalsperre verwaltet auch das Konzessionsrecht für Waldeck.',
-          },
-          {
-            sym: 'P5',
-            name: 'Frankfurt-Hanauer-Bahn',
+            name: 'Frankfurt-Hanauer Bahn',
+            sym: 'FB',
             value: 70,
             revenue: 15,
-            desc: 'Spezialfertigkeit: kann ab der grünen Phase gegen 10% FHB eingetauscht werden, dann erhält die FHB einen ' \
-                  'kostenlosen zweiten Heimat-Bahnhofsmarker in Hanau (auch wenn Hanau noch unbebaut ist). Dies muss ' \
-                  'spätestens mit Beginn der braunen Phase erfolgen, was mitten in der OR wäre (wobei dann die Austauschaktie ' \
-                  'in der laufenden OR noch keine Dividende durch Ausschütten erhält), selbst wenn die FHB zu diesem Zeitpunkt ' \
-                  'noch nicht gegründet worden ist. Geht die FHB durch den letzteren Fall in Betrieb, operiert sie erstmals in ' \
-                  'der folgenden OR. Der Besitzer der Frankfurt-Hanauer-Bahn verwaltet auch das Konzessionsrecht für ' \
-                  'Hessen-Kassel.',
+            desc: 'Exchange for share of FHB and lay free token in Hanau.',
+            meta: { start_packet: true },
+            abilities: [
+              {
+                type: 'token',
+                owner_type: 'player',
+                hexes: 'G20',
+                when: 'player',
+                count: 1,
+              },
+              { type: 'acquire_company', company: 'HKC' },
+            ],                          
+            color: nil,
           },
           {
-            sym: 'P6',
             name: 'Taunusbahn',
+            sym: 'TB',
             value: 80,
             revenue: 15,
-            desc: 'Spezialfertigkeit: kann ab der grünen Phase gegen 10% WEG eingetauscht werden, muss dann kostenlos sofort ' \
-                  'ein Taunusfeld in Nassau gelb bebauen. Sie muss am Ende der OR getauscht werden, in der alle drei ' \
-                  'Taunusfelder anderweitig bebaut worden sind, spätestens jedoch mit Beginn der braunen Phase inklusive des ' \
-                  'Sonder-Gleisbaus, was mitten in der OR wäre (wobei dann die Austauschaktie in der laufenden OR noch keine ' \
-                  'Dividende durch Ausschütten erhält), selbst wenn zu einem solchen Zeitpunkt die WEG noch nicht gegründet ' \
-                  'worden ist. Geht die WEG durch den letzteren Fall in Betrieb, operiert sie erstmals in der folgenden OR.' \
-                  'Der Besitzer der Taunusbahn verwaltet auch das Konzessionsrecht für Nassau.',
+            desc: 'Exchange for share of WEG and lay free yellow tile in one Taunus Space.',
+            meta: { start_packet: true },
+            abilities: [
+              {
+                type: 'tile_lay',
+                owner_type: 'player',
+                hexes: ['I4' 'I6' 'I8'],
+                tiles: %w[3 4 58 7 8 9],
+                when: 'player',
+                count: 1,
+              },
+              { type: 'acquire_company', company: 'NC' }
+
+            ],            
+            color: nil,
           },
           {
-            sym: 'P7',
             name: 'Odenwaldbahn',
+            sym: 'OB',
             value: 90,
             revenue: 15,
-            desc: 'Spezialfertigkeit: kann ab der grünen Phase gegen 10% SB eingetauscht werden, muss dann kostenlos sofort ' \
-                  'ein Odenwaldfeld gelb bebauen. Sie muss am Ende der OR getauscht werden, in der alle drei Odenwaldfelder ' \
-                  'anderweitig bebaut worden sind, spätestens jedoch mit Beginn der braunen Phase inklusive des ' \
-                  'Sonder-Gleisbaus, was mitten in der OR wäre (wobei dann die Austauschaktie in der laufenden OR noch keine ' \
-                  'Dividende durch Ausschütten erhält), selbst wenn zu einem solchen Zeitpunkt die SB noch nicht gegründet ' \
-                  'worden ist. Geht die SB durch den letzteren Fall in Betrieb, operiert sie erstmals in der folgenden OR. ' \
-                  'Der Besitzer der Odenwaldbahn verwaltet auch das Konzessionsrecht für Hessen-Darmstadt.',
+            desc: 'Exchange for share of SB and lay free yellow tile in one Odenwald Space.',
+            meta: { start_packet: true },
+            abilities: [
+              {
+                type: 'tile_lay',
+                owner_type: 'player',
+                hexes: ['M12' 'N13' 'O12'],
+                tiles: %w[3 4 58 7 8 9],
+                when: 'player',
+                count: 1,
+              },
+                { type: 'acquire_company', company: 'HDC' },
+              ],              
+            color: nil,
+          },
+          {
+            name: 'Waldeck Concession',
+            sym: 'WC',
+            value: 0,
+            revenue: 0,
+            desc: 'Concession rights for operations in Waldeck. Sell rights for 40$ to Owner',
+            abilities: [{ type: 'no_buy' },],
+            color: nil,
+            meta: { start_packet: false },
+          },
+          {
+            name: 'Hessen-Kassel Concession',
+            sym: 'HKC',
+            value: 0,
+            revenue: 0,
+            desc: 'Concession rights for operations in Hessen-Kassel. Sell rights for 40$ to Owner',
+            color: nil,
+            abilities: [{ type: 'no_buy' },],
+            meta: { start_packet: false },
+          },
+          {
+            name: 'Nassau Concession',
+            sym: 'NC',
+            value: 0,
+            revenue: 0,
+            desc: 'Concession rights for operations in Nassau. Sell rights for 40$ to Owner',
+            color: nil,
+            abilities: [{ type: 'no_buy' },],
+            meta: { start_packet: false },
+          },
+          {
+            name: 'Hessen-Darmstadt Concession',
+            sym: 'HDC',
+            value: 0,
+            revenue: 0,
+            desc: 'Concession rights for operations in Hessen-Darmstadt. Sell rights for 40$ to Owner',
+            color: nil,
+            abilities: [{ type: 'no_buy' },],
+            meta: { start_packet: false },
+          },
+          {
+            name: 'Frankfurt Concession',
+            sym: 'FC',
+            value: 0,
+            revenue: 0,
+            desc: 'Concession rights for city passage of Frankfurt. Sell rights for 40$ to Owner',
+            color: nil,
+            abilities: [{ type: 'no_buy' },],
+
           },
         ].freeze
 
         CORPORATIONS = [
           {
             float_percent: 50,
-            sym: 'WEG',
-            name: 'Wiesbadener Eisenbahn-Gesellschaft',
-            logo: '18_hn/WEG',
+            sym: 'SB',
+            name: 'Starkenburg Bahn',
+            logo: '18_hn/SB',
+            simple_logo: '18_hn/SB.alt',
             tokens: [0, 40, 100],
-            coordinates: 'J9',
-            color: :lightBlue,
-            text_color: :green,
-          },
-          {
-            float_percent: 50,
-            sym: 'LTB',
-            name: 'Lahntalbahn',
-            logo: '18_hn/LTB',
-            tokens: [0, 40, 100],
-            coordinates: 'H7',
-            color: :orange,
-            text_color: 'black',
+            ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
+            reserved_shares: [10],
+            coordinates: 'L11',
+            color: :gray,
           },
           {
             float_percent: 50,
             sym: 'MNB',
             name: 'Main-Neckar-Bahn',
             logo: '18_hn/MNB',
+            simple_logo: '18_hn/mnb.alt',
             tokens: [0, 40, 100],
+            ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
+            reserved_shares: [10],
             coordinates: 'N11',
             color: :blue,
           },
           {
             float_percent: 50,
-            sym: 'SB',
-            name: 'Starkenburger Bahn',
-            logo: '18_hn/SB',
-            tokens: [0, 40, 100],
-            coordinates: 'L11',
-            color: :gray,
-          },
-          {
-            float_percent: 50,
             sym: 'HLB',
-            name: 'Hessische Ludwigseisenbahn',
+            name: 'Hessische Landesbahn',
             logo: '18_hn/HLB',
+            simple_logo: '18_hn/hlb.alt',
             tokens: [0, 40, 100],
             coordinates: 'K8',
             color: :white,
@@ -178,48 +252,83 @@ module Engine
           {
             float_percent: 50,
             sym: 'VB',
-            name: 'Vogelsbergbahn',
+            name: 'Vogelsberg-Bahn',
             logo: '18_hn/VB',
+            simple_logo: '18_hn/vb.alt',
             tokens: [0, 40, 100],
             coordinates: 'F17',
             color: :brown,
           },
           {
             float_percent: 50,
-            sym: 'MWB',
-            name: 'Main-Weser-Bahn',
-            logo: '18_hn/MWB',
+            sym: 'WEG',
+            name: 'Wiesbadener Eisenbahngesellschaft',
+            logo: '18_hn/WEG',
+            simple_logo: '18_hn/weg.alt',
             tokens: [0, 40, 100],
-            coordinates: 'F13',
-            color: :red,
+            ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
+            reserved_shares: [10],
+            coordinates: 'J9',
+            color: :'#ADD8E6',
+            text_color: :green,
           },
           {
             float_percent: 50,
-            sym: 'FWN',
-            name: 'Friedrich-Wilhelm-Nordbahn',
-            logo: '18_hn/FWN',
+            sym: 'LTB',
+            name: 'Lahntal-Bahn',
+            logo: '18_hn/LTB',
+            simple_logo: '18_hn/ltb.alt',
             tokens: [0, 40, 100],
-            coordinates: 'C18',
-            color: :lightgreen,
+            coordinates: 'H7',
+            color: :orange,
+            text_color: 'black',
           },
           {
             float_percent: 50,
             sym: 'FHB',
             name: 'Fulda-Hanauer Bahn',
             logo: '18_hn/FHB',
-            tokens: [0, 0, 40],
-            coordinates: %w[G20 J15],
+            simple_logo: '18_hn/fhb.alt',
+            tokens: [0, 40],
+            coordinates: 'G20',
+            ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
+            reserved_shares: [10],
+            city: 0,
             color: :purple,
           },
           {
             float_percent: 50,
+            sym: 'MWB',
+            name: 'Main-Weser-Bahn',
+            logo: '18_hn/MWB',
+            simple_logo: '18_hn/mwb.alt',
+            tokens: [0, 40, 100],
+            coordinates: 'F13',
+            color: :red,
+          },
+          {
+            float_percent: 50,
             sym: 'WLB',
-            name: 'Waldeck\'sche Landesbahn',
+            name: 'Waldecksche Landesbahn',
             logo: '18_hn/WLB',
+            simple_logo: '18_hn/wlb.alt',
             tokens: [0, 40, 100],
             coordinates: 'C14',
+            ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
+            reserved_shares: [10],
+            city: 0,
             color: :yellow,
             text_color: :black,
+          },
+          {
+            float_percent: 50,
+            sym: 'FWN',
+            name: 'Friedrich-Wilhelm-Nordbahn',
+            logo: '18_hn/FWN',
+            simple_logo: '18_hn/fwn.alt',
+            tokens: [0, 40, 100],
+            coordinates: 'C18',
+            color: :lightgreen,
           },
         ].freeze
       end

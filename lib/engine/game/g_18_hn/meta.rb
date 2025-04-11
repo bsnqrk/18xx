@@ -23,6 +23,13 @@ module Engine
         GAME_TITLE = '18HN'
 
         PLAYER_RANGE = [3, 5].freeze
+        OPTIONAL_RULES = [
+          {
+            sym: :Seidler,
+            short_name: 'Seidler & Siebrecht',
+            desc: 'new minor, allow one building with costs',
+          },
+        ].freeze
       end
     end
   end

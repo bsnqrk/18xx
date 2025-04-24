@@ -20,7 +20,7 @@ module Engine
           '25' => 3,
           '26' => 1,
           '27' => 1,
-          '28' => 1,     
+          '28' => 1,
           '29' => 1,
           '30' => 1,
           '31' => 1,
@@ -163,7 +163,7 @@ module Engine
             'code' => 'town=revenue:10;label=Hom;path=a:0,b:_0;path=a:1,b:_0;path=a:2,b:_0;path=a:4,b:_0;path=a:5,b:_0',
           },
         }.freeze
-        
+
         LOCATION_NAMES = {
           'A18' => 'Bad Karlshafen',
           'B19' => 'Kgr. Hannover',
@@ -234,11 +234,11 @@ module Engine
             %w[N13] => 'town=revenue:0;upgrade=cost:40,terrain:mountain;label=O',
             %w[E18 H7] => 'city=revenue:0;upgrade=cost:20,terrain:water',
             ['C18'] => 'city=revenue:0;upgrade=cost:20,terrain:water;label=KGD',
-            ['B15'] => 'town=revenue:0;border=edge:4,type:province;border=edge:5,type:province',
+            ['B15'] => 'town=revenue:0;border=edge:5,type:province;frame=color:#fffbcc',
             ['B17'] => 'town=revenue:0;border=edge:1,type:province,color:yellow',
             ['C14'] => 'city=revenue:0;border=edge:4,type:province',
             ['C16'] => 'city=revenue:0;border=edge:0,type:province,color:yellow;border=edge:1,type:province,color:yellow;' \
-                        'border=edge:2,type:province,color:yellow',
+                       'border=edge:2,type:province,color:yellow',
             ['D13'] => 'upgrade=cost:20,terrain:water;border=edge:0,type:province,color:yellow;border=edge:4,type:impassable;' \
                        'border=edge:5,type:province,color:yellow;',
             ['D15'] => 'town=revenue:0;upgrade=cost:60,terrain:water|mountain;border=edge:0,type:province;' \
@@ -248,8 +248,8 @@ module Engine
             ['D21'] => 'city=revenue:0;upgrade=cost:40,terrain:mountain',
             ['E12'] => 'upgrade=cost:20,terrain:water;border=edge:3,type:province,color:yellow;border=edge:4,type:province;' \
                        'border=edge:5,type:province',
-            ['E14'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:1,type:province;border=edge:2,type:province,color:yellow;' \
-                       'border=edge:3,type:province;border=edge:3,type:impassable',
+            ['E14'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:1,type:province;border=edge:2,type:province,'\
+                       'color:yellow;border=edge:3,type:province;border=edge:3,type:impassable',
             ['F9'] => 'town=revenue:0;upgrade=cost:20,terrain:water;border=edge:4,type:province;border=edge:5,type:province',
             ['F11'] => 'town=revenue:0;upgrade=cost:60,terrain:water|mountain;border=edge:0,type:province;' \
                        'border=edge:1,type:province,color:green;border=edge:4,type:province',
@@ -259,7 +259,8 @@ module Engine
             ['F17'] => 'city=revenue:10;path=a:5,b:_0;border=edge:1,type:province;border=edge:2,type:province;' \
                        'border=edge:3,type:province;border=edge:4,type:province',
             ['G8'] => 'upgrade=cost:40,terrain:mountain;border=edge:4,type:province',
-            ['G12'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:1,type:province;border=edge:3,type:province;label=KGD',
+            ['G12'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:1,type:province;border=edge:3,'\
+                       'type:province;label=KGD',
             ['G14'] => 'town=revenue:0;border=edge:2,type:province;border=edge:3,type:province',
             ['G16'] => 'upgrade=cost:40,terrain:mountain;border=edge:2,type:province',
             ['G18'] => 'town=revenue:0;upgrade=cost:40,terrain:mountain;border=edge:3,type:province;' \
@@ -281,12 +282,14 @@ module Engine
             ['J7'] => 'border=edge:0,type:impassable;border=edge:5,type:impassable',
             ['J9'] => 'city=revenue:0;border=edge:0,type:water,cost:60;border=edge:5,type:water,cost:60;' \
                       'border=edge:3,type:province;border=edge:4,type:province;',
-            ['J11'] => 'city=revenue:0;path=a:4,b:_0,track:narrow;border=edge:0,type:province;border=edge:1,type:province,color:green;' \
-                       'border=edge:2,type:province,color:blue;border=edge:3,type:province,color:blue;border=edge:5,type:province;label=F/W',
-            ['J13'] => 'city=revenue:0;path=a:1,b:_0,track:narrow;border=edge:0,type:province;border=edge:2,color:blue,type:province;' \
-                       'border=edge:3,type:province,color:blue;border=edge:4,type:province;border=edge:5,type:province;label=F/E',
-            ['J15'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:0,type:province;border=edge:1,type:province;' \
-                       'border=edge:2,type:province',
+            ['J11'] => 'city=revenue:0;path=a:4,b:_0,track:narrow;border=edge:0,type:province;border=edge:1,type:province,'\
+                       'color:green;border=edge:2,type:province,color:blue;border=edge:3,type:province,'\
+                       'color:blue;border=edge:5,type:province;label=F/W',
+            ['J13'] => 'city=revenue:0;path=a:1,b:_0,track:narrow;border=edge:0,type:province;border=edge:2,color:blue,'\
+                       'type:province;border=edge:3,type:province,color:blue;border=edge:4,type:province;border=edge:5,'\
+                       'type:province;label=F/E',
+            ['J15'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:0,type:province;border=edge:1,'\
+                       'type:province;border=edge:2,type:province',
             ['K4'] => 'city=revenue:0;upgrade=cost:20,terrain:water;border=edge:3,type:water,cost:60',
             ['K6'] => 'border=edge:2,type:impassable;border=edge:3,type:impassable',
             ['K8'] => 'city=revenue:10;path=a:1,b:_0;border=edge:3,type:water,cost:60;' \
@@ -306,32 +309,34 @@ module Engine
           },
           red: {
             ['B11'] => 'offboard=revenue:yellow_30|green_40|brown_50;path=a:5,b:_0;icon=image:18_HN/N,sticky:1',
-            ['B19'] => 'offboard=revenue:yellow_30|green_40|brown_50;path=a:0,b:_0;path=a:2,b:_0;icon=image:18_HN/N,sticky:1',
-            ['E10'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:5,b:_0;icon=image:18_HN/W,sticky:1',
-            ['K16'] => 'offboard=revenue:yellow_20|green_30|brown_50;path=a:1,b:_0;path=a:2,b:_0;icon=image:18_HN/O,sticky:1',
+            ['B19'] => 'offboard=revenue:yellow_30|green_40|brown_50;path=a:0,b:_0;path=a:2,b:_0',
+            ['E10'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:5,b:_0',
+            ['K16'] => 'offboard=revenue:yellow_20|green_30|brown_50;path=a:1,b:_0;path=a:2,b:_0',
             ['N5'] => 'offboard=revenue:yellow_20|green_30|brown_50,groups:Pfalz,hide:1;path=a:3,b:_0;border=edge:5',
-            ['O6'] => 'offboard=revenue:yellow_20|green_30|brown_50,groups:Pfalz;border=edge:2;border=edge:4;icon=image:18_HN/S,sticky:1',
+            ['O6'] => 'offboard=revenue:yellow_20|green_30|brown_50,groups:Pfalz;border=edge:2;border=edge:4',
             ['O8'] => 'offboard=revenue:yellow_20|green_30|brown_50,groups:Pfalz,hide:1;path=a:2,b:_0;path=a:3,b:_0;' \
                       'border=edge:1',
             ['E22'] => 'offboard=revenue:yellow_30|green_40|brown_50,groups:Thüringen,hide:1;path=a:2,b:_0;border=edge:5',
-            ['F23'] => 'offboard=revenue:yellow_30|green_40|brown_50,groups:Thüringen;path=a:1,b:_0;border=edge:0;border=edge:2;icon=image:18_HN/O,sticky:1',
+            ['F23'] => 'offboard=revenue:yellow_30|green_40|brown_50,groups:Thüringen;path=a:1,b:_0;border=edge:0;'\
+                       'border=edge:2',
             ['G22'] => 'offboard=revenue:yellow_30|green_40|brown_50,groups:Thüringen,hide:1;path=a:1,b:_0;border=edge:3',
-            ['O10'] => 'offboard=revenue:yellow_30|green_40|brown_50;path=a:3,b:_0;path=a:4,b:_0;icon=image:18_HN/S,sticky:1',
+            ['O10'] => 'offboard=revenue:yellow_30|green_40|brown_50;path=a:3,b:_0;path=a:4,b:_0',
             ['G2'] => 'offboard=revenue:yellow_30|green_50|brown_60,groups:Rheinland,hide:1;path=a:4,b:_0;' \
                       'path=a:5,b:_0;border=edge:0',
-            ['H1'] => 'offboard=revenue:yellow_30|green_50|brown_60,groups:Rheinland;border=edge:3;border=edge:5;icon=image:18_HN/W,sticky:1',
+            ['H1'] => 'offboard=revenue:yellow_30|green_50|brown_60,groups:Rheinland;border=edge:3;border=edge:5',
             ['I2'] => 'offboard=revenue:0,groups:Rheinland,hide:1;border=edge:2;border=edge:5',
             ['J3'] => 'offboard=revenue:yellow_30|green_50|brown_60,groups:Rheinland,hide:1;path=a:5,b:_0;border=edge:2',
           },
           green: {
-            ['I10'] => 'town=revenue:0;upgrade=cost:40,terrain:mountain;' \
-                       'border=edge:0,type:province,color:green;border=edge:1,type:province,color:green;border=edge:2,type:province,color:green;' \
-                       'border=edge:3,type:province,color:blue;border=edge:4,type:province,color:blue;border=edge:5,type:province,color:blue',
+            ['I10'] => 'town=revenue:0;upgrade=cost:40,terrain:mountain;border=edge:0,type:province,color:green;border=edge:1'\
+                       ',type:province,color:green;border=edge:2,type:province,color:green;border=edge:3,type:province,'\
+                       'color:blue;border=edge:4,type:province,color:blue;border=edge:5,type:province,color:blue',
           },
           brown: {
             ['G10'] => 'city=revenue:yellow_20|green_30|brown_40;path=a:2,b:_0;path=a:4,b:_0;path=a:6,b:_0;' \
-                       'border=edge:0,type:province,color:green;border=edge:1,type:province,color:green;border=edge:2,type:province,color:green;' \
-                       'border=edge:3,type:province,color:blue;border=edge:4,type:province,color:blue;border=edge:5,type:province,color:blue',
+                       'border=edge:0,type:province,color:green;border=edge:1,type:province,color:green;border=edge:2,'\
+                       'type:province,color:green;border=edge:3,type:province,color:blue;border=edge:4,type:province,'\
+                       'color:blue;border=edge:5,type:province,color:blue',
           },
         }.freeze
         LAYOUT = :pointy
@@ -395,7 +400,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -405,7 +410,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },
+              }
             ],
             [
               {
@@ -444,7 +449,7 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },              {
+              }, {
                 text: '+30',
                 props: {
                   style: {
@@ -454,7 +459,7 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },
+              }
             ],
             [
               {
@@ -493,7 +498,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -503,7 +508,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },
+              }
             ],
             [
               {
@@ -542,7 +547,7 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -552,8 +557,8 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },
-            ],[
+              }
+            ], [
               {
                 text: 'Südwestfalen W',
                 props: { style: { border: "1px solid #{font_color}", color: 'white', backgroundColor: 'grey' } },
@@ -590,7 +595,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -600,7 +605,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },
+              }
             ],
             [
               {
@@ -639,7 +644,7 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -649,8 +654,8 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },
-            ],[
+              }
+            ], [
               {
                 text: 'Thüringen O',
                 props: { style: { border: "1px solid #{font_color}", color: 'white', backgroundColor: 'grey' } },
@@ -687,7 +692,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },              {
+              }, {
                 text: '+30',
                 props: {
                   style: {
@@ -697,7 +702,7 @@ module Engine
                     backgroundColor: 'grey',
                   },
                 },
-              },
+              }
             ],
             [
               {
@@ -736,7 +741,7 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },              {
+              }, {
                 text: '+20',
                 props: {
                   style: {
@@ -746,8 +751,8 @@ module Engine
                     backgroundColor: 'white',
                   },
                 },
-              },
-            ],
+              }
+            ]
           ]
         end
       end

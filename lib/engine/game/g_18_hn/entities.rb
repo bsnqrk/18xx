@@ -12,14 +12,14 @@ module Engine
             revenue: 5,
             desc: 'lay free special tile in Bad Homburg with the first 5-Train.',
             abilities: [{ type: 'blocks_hexes', owner_type: 'player', hexes: ['I10'] },
-            {
-              type: 'tile_lay',
-              owner_type: 'player',
-              hexes: ['I10'],
-              tiles: '939',
-              when: 'any',
-              count: 1,
-            }],
+                        {
+                          type: 'tile_lay',
+                          owner_type: 'player',
+                          hexes: ['I10'],
+                          tiles: '939',
+                          when: 'any',
+                          count: 1,
+                        }],
             color: nil,
             meta: { start_packet: true },
           },
@@ -37,7 +37,8 @@ module Engine
                           tiles: 'yellow',
                           when: 'player',
                           count: 1,
-                        }],
+                        },
+],
             meta: { start_packet: true },
             color: nil,
           },
@@ -50,35 +51,38 @@ module Engine
             desc: 'can build two free bridges, close after the second bridge.',
             meta: { start_packet: true },
             color: nil,
-            abilities: [ 
+            abilities: [
               {
                 type: 'tile_lay',
                 owner_type: 'player_or_company',
-                hexes: ['K4' 'J5' 'K8' 'J9' 'K10' 'L9' 'N9' 'N11'],
+                hexes: %w[K4 J5 K8 J9 K10 L9 N9 N11],
                 tiles: %w[9],
                 when: 'player',
                 count: 4,
-              }
-            ]
+              },
+],
           },
           {
             name: 'Frankfurter Lokalbahn AG',
             sym: 'FL',
             value: 50,
             revenue: 0,
-            desc: 'Director may lay one tile in Frankfurt at start of each OR. Owns the concession rights of city passage of Frankfurt',
+            desc: 'Director may lay one tile in Frankfurt at start of each OR.'\
+                  ' Owns the concession rights of city passage of Frankfurt',
             meta: { start_packet: true },
-            abilities: [ 
+            abilities: [
               {
                 type: 'tile_lay',
                 owner_type: 'player',
-                hexes: ['J11' 'J13'],
+                hexes: %w[J11 J13],
                 tiles: %w[921 922 923 924],
+                free: true,
+                reachable: false,
                 when: 'player',
                 count: 4,
               },
               { type: 'acquire_company', company: 'FC' },
-            ],            
+],
             color: nil,
           },
           {
@@ -98,7 +102,7 @@ module Engine
                 count: 1,
               },
               { type: 'acquire_company', company: 'WC' },
-            ],            
+            ],
             color: nil,
           },
           {
@@ -117,7 +121,7 @@ module Engine
                 count: 1,
               },
               { type: 'acquire_company', company: 'HKC' },
-            ],                          
+            ],
             color: nil,
           },
           {
@@ -131,14 +135,14 @@ module Engine
               {
                 type: 'tile_lay',
                 owner_type: 'player',
-                hexes: ['I4' 'I6' 'I8'],
+                hexes: %w[I4 I6 I8],
                 tiles: %w[3 4 58 7 8 9],
                 when: 'player',
                 count: 1,
               },
-              { type: 'acquire_company', company: 'NC' }
+              { type: 'acquire_company', company: 'NC' },
 
-            ],            
+            ],
             color: nil,
           },
           {
@@ -152,13 +156,13 @@ module Engine
               {
                 type: 'tile_lay',
                 owner_type: 'player',
-                hexes: ['M12' 'N13' 'O12'],
+                hexes: %w[M12 N13 O12],
                 tiles: %w[3 4 58 7 8 9],
                 when: 'player',
                 count: 1,
               },
-                { type: 'acquire_company', company: 'HDC' },
-              ],              
+              { type: 'acquire_company', company: 'HDC' },
+              ],
             color: nil,
           },
           {
@@ -167,7 +171,7 @@ module Engine
             value: 0,
             revenue: 0,
             desc: 'Concession rights for operations in Waldeck. Sell rights for 40$ to Owner',
-            abilities: [{ type: 'no_buy' },],
+            abilities: [{ type: 'no_buy' }],
             color: nil,
             meta: { start_packet: false },
           },
@@ -178,7 +182,7 @@ module Engine
             revenue: 0,
             desc: 'Concession rights for operations in Hessen-Kassel. Sell rights for 40$ to Owner',
             color: nil,
-            abilities: [{ type: 'no_buy' },],
+            abilities: [{ type: 'no_buy' }],
             meta: { start_packet: false },
           },
           {
@@ -188,7 +192,7 @@ module Engine
             revenue: 0,
             desc: 'Concession rights for operations in Nassau. Sell rights for 40$ to Owner',
             color: nil,
-            abilities: [{ type: 'no_buy' },],
+            abilities: [{ type: 'no_buy' }],
             meta: { start_packet: false },
           },
           {
@@ -198,7 +202,7 @@ module Engine
             revenue: 0,
             desc: 'Concession rights for operations in Hessen-Darmstadt. Sell rights for 40$ to Owner',
             color: nil,
-            abilities: [{ type: 'no_buy' },],
+            abilities: [{ type: 'no_buy' }],
             meta: { start_packet: false },
           },
           {
@@ -208,7 +212,7 @@ module Engine
             revenue: 0,
             desc: 'Concession rights for city passage of Frankfurt. Sell rights for 40$ to Owner',
             color: nil,
-            abilities: [{ type: 'no_buy' },],
+            abilities: [{ type: 'no_buy' }],
 
           },
         ].freeze

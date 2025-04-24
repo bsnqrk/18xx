@@ -38,6 +38,30 @@ module Engine
 
         HOME_TOKEN_TIMING = :operate
 
+        RIGHT_COST = 40
+
+        CORPORATIONS_OPERATING_RIGHTS = {
+          'FWN' => 'KAS',
+          'FHB' => 'KAS',
+          'LTB' => 'NAS',
+          'WEG' => 'NAS',
+          'MWB' => 'KAS',
+          'WLB' => 'WAL',
+          'SB' => 'DAR',
+          'HLB' => 'DAR',
+          'MNB' => 'DAR',
+          'VB' => 'DAR',
+        }.freeze
+
+        NATIONAL_REGION_HEXES = {
+          'KAS' => %w[A18 B17 C16 C18 C20 D17 D19 D21 E14 E16 E18 E20 F13 F15 F19 F21 G20 H19 I16 I18 J15],
+          'WAL' => %w[B15 C12 C14 D13],
+          'DAR' => %w[f11 F17 G12 G14 G16 G18 H11 H13 H15 H17 I12 I14 K4 K6 K8 K10 K12 K14 L5 L7 L9 L11 L13 M6 M8 M10 M12 N7 N9
+                      N11 N13 O12],
+          'NAS' => %w[F5 F7 F9 F11 G4 G6 G8 H3 H5 H7 H9 I4 I6 I8 J5 J7 J9],
+          'FLB' => %w[J11 J13],
+        }.freeze
+
         MARKET = [
           ['', '', '85', '90', '100p', '110', '120', '130', '140', '160', '180', '200', '225', '250', '275', '300', '325', '350',
            '375', '400'],
@@ -163,11 +187,11 @@ module Engine
             ],
           },
         ].freeze
-        
+
         def seidler_variant?
           @seidler_variant ||= @optional_rules&.include?(:Seidler)
         end
-        
+
         def initial_auction_companies
           @companies.select { |company| company.meta[:start_packet] }
         end
@@ -187,12 +211,47 @@ module Engine
           end
         end
 
+        def nassau?(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.type == :hex_bonus }
+        end
+        def buy_nassau_right(entity)
+          seller = bridge.closed? ? @bank : bridge.owner
+          seller_name = bridge.closed? ? 'the bank' : bridge.owner.name
+          @log << "#{entity.name} buys a bridge token from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
+
+          unless unlimited_bonus_tokens?
+            tile_icons = hex_by_id(BRIDGE_TOKEN_HEX).tile.icons
+            tile_icons.delete_at(tile_icons.index { |icon| icon.name == 'bridge' })
+
+            graph.clear
+          end
+          grant_right(entity, :bridge)
+        end
+
+        def grant_right(corporation, type)
+          corporation.add_ability(Engine::Ability::HexBonus.new(
+            type: :hex_bonus,
+            description: "+10 bonus when running to #{type == :tunnel ? 'Sarnia' : 'Buffalo'}",
+            hexes: type == :tunnel ? %w[B13] : %w[P17 P19],
+            amount: 10,
+            owner_type: :corporation
+          ))
+        end
+
+        def can_buy_nassau_right?(entity)
+          return false unless entity.corporation?
+
+          !nassau?(entity) && buying_power(entity) >= RIGHT_COST
+        end
+
         def init_starting_cash(players, bank)
           cash = cash_by_options[players.size]
           players.each do |player|
             bank.spend(cash, player)
           end
-        end      
+        end
 
         def setup_preround
           # Make sure the start player order is randomized
@@ -201,7 +260,7 @@ module Engine
 
         def new_auction_round
           Round::Auction.new(self, [
-            Step::SelectionAuction,
+            Engine::Step::SelectionAuction,
           ])
         end
 
@@ -248,13 +307,60 @@ module Engine
 
         def operating_round(round_num)
           Round::Operating.new(self, [
-            Engine::Step::Track,
+            G18HN::Step::SpecialBuy,
+            G18HN::Step::Track,
+            Engine::Step::SpecialTrack,
             Engine::Step::Token,
             Engine::Step::Route,
             Engine::Step::Dividend,
             Engine::Step::DiscardTrain,
             Engine::Step::BuyTrain,
           ], round_num: round_num)
+        end
+
+        def national_hexes(corporation_id)
+          self.class::NATIONAL_REGION_HEXES[corporation_id].dup
+        end
+
+        def operating_rights(entity)
+          # welche concession hat die Gesellchaft
+          rights = self.class::CORPORATIONS_OPERATING_RIGHTS[entity.id]
+          corporation_rights = rights.is_a?(Array) ? rights.dup : [rights]
+          corporation_rights.uniq
+        end
+
+        def corporation_token_rights!(corporation)
+          return if !corporation?(corporation) || !corporation.floated?
+
+          corporation.placed_tokens.dup.each do |token|
+            next if hex_operating_rights?(corporation, token.hex)
+
+            next_token = corporation.placed_tokens.last
+            @log << "#{corporation.name} doesn't have operations right to the hex #{token.hex.name}, it's token "\
+                    ' comes back to the charter'
+            token.remove!
+            next if token == next_token
+
+            price = token.price
+            token.price = next_token.price
+            next_token.price = price
+            corporation.tokens.sort_by!(&:price)
+          end
+        end
+
+        def hex_operating_rights?(entity, hex)
+          nationals = operating_rights(entity)
+          nationals.any? { |national| national_hexes(national).include?(hex.name) }
+        end
+
+        def visits_operating_rights?(entity, visits)
+          nationals = operating_rights(entity)
+
+          count = visits.count do |v|
+            nationals.any? { |national| national_hexes(national).include?(v.hex.name) }
+          end
+
+          count == visits.size
         end
       end
     end

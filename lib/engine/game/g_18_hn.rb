@@ -2,7 +2,7 @@
 
 module Engine
   module Game
-    module G18_HN
+    module G18HN
     end
   end
 end

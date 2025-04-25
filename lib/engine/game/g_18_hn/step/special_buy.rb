@@ -12,10 +12,10 @@ module Engine
           def buyable_items(entity)
             items = []
             items << @nassau_item if @game.can_buy_nassau_right?(entity)
-            #items << @darmstadt_item if @game.can_buy_bridge_token?(entity)
-            #items << @kassel_item if @game.can_buy_tunnel_token?(entity)
-            #items << @waldeck_item if @game.can_buy_bridge_token?(entity)
-            #items << @frankfurt_item if @game.can_buy_tunnel_token?(entity)
+            items << @darmstadt_item if @game.can_buy_darmstadt_right?(entity)
+            items << @kassel_item if @game.can_buy_kassel_right?(entity)
+            items << @waldeck_item if @game.can_buy_waldeck_right?(entity)
+            items << @frankfurt_item if @game.can_buy_frankfurt_right?(entity)
 
             items
           end
@@ -26,7 +26,11 @@ module Engine
 
           def process_special_buy(action)
             item = action.item
-            #return @game.buy_nassau_right(action.entity) if item == @nassau_item
+            return @game.buy_nassau_right(action.entity) if item == @nassau_item
+            return @game.buy_darmstadt_right(action.entity) if item == @darmstadt_item
+            return @game.buy_kassel_right(action.entity) if item == @kassel_item
+            return @game.buy_waldeck_right(action.entity) if item == @waldeck_item
+            return @game.buy_frankfurt_right(action.entity) if item == @frankfurt_item
 
             raise GameError, "Cannot buy unknown item: #{item.description}"
           end

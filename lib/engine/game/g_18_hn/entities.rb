@@ -275,6 +275,7 @@ module Engine
             coordinates: 'J9',
             color: :'#ADD8E6',
             text_color: :green,
+            # abilities: [{ type: 'hex_name' , description: 'Nassau Right', hexes: 'NAS' }],
           },
           {
             float_percent: 50,

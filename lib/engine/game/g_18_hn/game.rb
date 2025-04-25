@@ -188,6 +188,26 @@ module Engine
           },
         ].freeze
 
+        def nassau
+          @nassau ||= company_by_id('NC')
+        end
+
+        def darmstadt
+          @darmstadt ||= company_by_id('HDC')
+        end
+
+        def kassel
+          @kassel ||= company_by_id('HKC')
+        end
+
+        def waldeck
+          @waldeck ||= company_by_id('WC')
+        end
+
+        def frankfurt
+          @frankfurt ||= company_by_id('FC')
+        end
+
         def seidler_variant?
           @seidler_variant ||= @optional_rules&.include?(:Seidler)
         end
@@ -213,37 +233,110 @@ module Engine
 
         def nassau?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :hex_bonus }
+          corporation.all_abilities.any? { |ability| ability.type == :rights }
         end
+        def darmstadt?(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.type == :rights }
+        end
+        def kassel?(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.type == :rights }
+        end
+        def waldeck?(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.type == :rights }
+        end
+        def frankfurt?(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.type == :rights }
+        end
+
         def buy_nassau_right(entity)
-          seller = bridge.closed? ? @bank : bridge.owner
-          seller_name = bridge.closed? ? 'the bank' : bridge.owner.name
-          @log << "#{entity.name} buys a bridge token from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          seller = nassau.owner
+          seller_name = nassau.owner.name
+          @log << "#{entity.name} buys a Nassau Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
           entity.spend(RIGHT_COST, seller)
 
-          unless unlimited_bonus_tokens?
-            tile_icons = hex_by_id(BRIDGE_TOKEN_HEX).tile.icons
-            tile_icons.delete_at(tile_icons.index { |icon| icon.name == 'bridge' })
+          grant_right(entity, nassau)
+        end
+        def buy_nassau_right(entity)
+          seller = nassau.owner
+          seller_name = nassau.owner.name
+          @log << "#{entity.name} buys a Nassau Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
 
-            graph.clear
-          end
-          grant_right(entity, :bridge)
+          grant_right(entity, nassau)
+        end
+        def buy_darmstadt_right(entity)
+          seller = darmstadt.owner
+          seller_name = darmstadt.owner.name
+          @log << "#{entity.name} buys a Darmstadt Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
+
+          grant_right(entity, darmstadt)
+        end
+        def buy_kassel_right(entity)
+          seller = kassel.owner
+          seller_name = kassel.owner.name
+          @log << "#{entity.name} buys a Kassel Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
+
+          grant_right(entity, kassel)
+        end
+        def buy_waldeck_right(entity)
+          seller = waldeck.owner
+          seller_name = waldeck.owner.name
+          @log << "#{entity.name} buys a Waldeck Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
+
+          grant_right(entity, waldeck)
+        end
+        def buy_frankfurt_right(entity)
+          seller = frankfurt.owner
+          seller_name = frankfurt.owner.name
+          @log << "#{entity.name} buys a Frankfurt Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
+          entity.spend(RIGHT_COST, seller)
+
+          grant_right(entity, frankfurt)
         end
 
         def grant_right(corporation, type)
-          corporation.add_ability(Engine::Ability::HexBonus.new(
-            type: :hex_bonus,
-            description: "+10 bonus when running to #{type == :tunnel ? 'Sarnia' : 'Buffalo'}",
-            hexes: type == :tunnel ? %w[B13] : %w[P17 P19],
-            amount: 10,
-            owner_type: :corporation
-          ))
+          # corporation.add_ability(Engine::Ability::rights.new(
+          #  type: :rights,
+          #  case type
+          #  when nassau
+          #    description: "Nassau-Rights",
+          #    concession: 'NAS',
+          #  end
+          #  owner_type: :corporation
+          # ))
         end
 
         def can_buy_nassau_right?(entity)
-          return false unless entity.corporation?
+          return false unless entity.corporation? 
 
           !nassau?(entity) && buying_power(entity) >= RIGHT_COST
+        end
+        def can_buy_darmstadt_right?(entity)
+          return false unless entity.corporation?
+
+          !darmstadt?(entity) && buying_power(entity) >= RIGHT_COST
+        end
+        def can_buy_kassel_right?(entity)
+          return false unless entity.corporation?
+
+          !kassel?(entity) && buying_power(entity) >= RIGHT_COST
+        end
+        def can_buy_waldeck_right?(entity)
+          return false unless entity.corporation?
+
+          !waldeck?(entity) && buying_power(entity) >= RIGHT_COST
+        end
+        def can_buy_frankfurt_right?(entity)
+          return false unless entity.corporation?
+
+          !frankfurt?(entity) && buying_power(entity) >= RIGHT_COST
         end
 
         def init_starting_cash(players, bank)

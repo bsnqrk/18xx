@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'entities'
+require_relative 'corporation'
 require_relative 'map'
 require_relative 'meta'
 require_relative '../base'
@@ -188,10 +189,13 @@ module Engine
           },
         ].freeze
 
+
+        def umtausch?(entity)
+          umtausch.include?(entity)
+        end
         def nassau
           @nassau ||= company_by_id('NC')
         end
-
         def darmstadt
           @darmstadt ||= company_by_id('HDC')
         end
@@ -233,23 +237,27 @@ module Engine
 
         def nassau?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :rights }
+          corporation.all_abilities.any? { |ability| ability.description.include?('Nassau') }
         end
+
         def darmstadt?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :rights }
+          corporation.all_abilities.any? { |ability| ability.description.include?('Darmstadt') }
         end
+
         def kassel?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :rights }
+          corporation.all_abilities.any? { |ability| ability.description.include?('Kassel') }
         end
+
         def waldeck?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :rights }
+          corporation.all_abilities.any? { |ability| ability.description.include?('Waldeck') }
         end
+
         def frankfurt?(corporation)
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.type == :rights }
+          corporation.all_abilities.any? { |ability| ability.description.include?('Frankfurt') }
         end
 
         def buy_nassau_right(entity)
@@ -260,14 +268,7 @@ module Engine
 
           grant_right(entity, nassau)
         end
-        def buy_nassau_right(entity)
-          seller = nassau.owner
-          seller_name = nassau.owner.name
-          @log << "#{entity.name} buys a Nassau Right from #{seller_name} for #{format_currency(RIGHT_COST)}"
-          entity.spend(RIGHT_COST, seller)
 
-          grant_right(entity, nassau)
-        end
         def buy_darmstadt_right(entity)
           seller = darmstadt.owner
           seller_name = darmstadt.owner.name
@@ -276,6 +277,7 @@ module Engine
 
           grant_right(entity, darmstadt)
         end
+
         def buy_kassel_right(entity)
           seller = kassel.owner
           seller_name = kassel.owner.name
@@ -284,6 +286,7 @@ module Engine
 
           grant_right(entity, kassel)
         end
+
         def buy_waldeck_right(entity)
           seller = waldeck.owner
           seller_name = waldeck.owner.name
@@ -292,6 +295,7 @@ module Engine
 
           grant_right(entity, waldeck)
         end
+
         def buy_frankfurt_right(entity)
           seller = frankfurt.owner
           seller_name = frankfurt.owner.name
@@ -302,37 +306,37 @@ module Engine
         end
 
         def grant_right(corporation, type)
-          # corporation.add_ability(Engine::Ability::rights.new(
-          #  type: :rights,
-          #  case type
-          #  when nassau
-          #    description: "Nassau-Rights",
-          #    concession: 'NAS',
-          #  end
-          #  owner_type: :corporation
-          # ))
-        end
+          ability = corporation.all_abilities.find { |a| a.type == :exchange }
+          ability.description += "\r\n"
+          ability.description += type.name
+          @log << "#{corporation.name} claims the #{type.name} concession"
 
+        end
+        
         def can_buy_nassau_right?(entity)
-          return false unless entity.corporation? 
+          return false unless entity.corporation?
 
           !nassau?(entity) && buying_power(entity) >= RIGHT_COST
         end
+
         def can_buy_darmstadt_right?(entity)
           return false unless entity.corporation?
 
           !darmstadt?(entity) && buying_power(entity) >= RIGHT_COST
         end
+
         def can_buy_kassel_right?(entity)
           return false unless entity.corporation?
 
           !kassel?(entity) && buying_power(entity) >= RIGHT_COST
         end
+
         def can_buy_waldeck_right?(entity)
           return false unless entity.corporation?
 
           !waldeck?(entity) && buying_power(entity) >= RIGHT_COST
         end
+
         def can_buy_frankfurt_right?(entity)
           return false unless entity.corporation?
 

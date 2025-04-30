@@ -60,7 +60,7 @@ module Engine
                 when: 'player',
                 count: 4,
               },
-],
+            ],
           },
           {
             name: 'Frankfurter Lokalbahn AG',

@@ -193,9 +193,11 @@ module Engine
         def umtausch?(entity)
           umtausch.include?(entity)
         end
+
         def nassau
           @nassau ||= company_by_id('NC')
         end
+
         def darmstadt
           @darmstadt ||= company_by_id('HDC')
         end
@@ -306,13 +308,15 @@ module Engine
         end
 
         def grant_right(corporation, type)
-          ability = corporation.all_abilities.find { |a| a.type == :exchange }
-          ability.description += "\r\n"
-          ability.description += type.name
-          @log << "#{corporation.name} claims the #{type.name} concession"
-
+          ability = Ability::Base.new(
+            type: 'consession',
+            description: type.name.to_s,
+            corporations: type.id,
+          )
+          corporation.add_ability(ability)
+          @log << "#{corporation.name} claims the #{type.name}"
         end
-        
+
         def can_buy_nassau_right?(entity)
           return false unless entity.corporation?
 
@@ -417,6 +421,11 @@ module Engine
 
         def national_hexes(corporation_id)
           self.class::NATIONAL_REGION_HEXES[corporation_id].dup
+        end
+
+        def operating_right(corporation)
+          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
+          corporation.all_abilities.any? { |ability| ability.corporations }
         end
 
         def operating_rights(entity)

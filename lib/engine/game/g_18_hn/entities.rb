@@ -237,7 +237,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]          
+            ],
           },
           {
             float_percent: 50,
@@ -258,7 +258,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]          
+            ],
           },
           {
             float_percent: 50,
@@ -278,7 +278,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]          
+            ],
           },
           {
             float_percent: 50,
@@ -297,7 +297,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]          
+            ],
           },
           {
             float_percent: 50,
@@ -362,7 +362,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]          
+            ],
           },
           {
             float_percent: 50,
@@ -381,7 +381,7 @@ module Engine
                 when: 'exchange',
                 from: 'reserved',
               },
-            ]
+            ],
           },
           {
             float_percent: 50,

@@ -189,7 +189,6 @@ module Engine
           },
         ].freeze
 
-
         def umtausch?(entity)
           umtausch.include?(entity)
         end
@@ -354,6 +353,11 @@ module Engine
           end
         end
 
+        def exchange_order
+          # order = coal_minor_exchange_order
+          order
+        end
+
         def setup_preround
           # Make sure the start player order is randomized
           @players.sort_by! { rand }
@@ -419,13 +423,22 @@ module Engine
           ], round_num: round_num)
         end
 
+        # def exchange_round(round_num)
+        # G18HN::Round::Exchange.new(self, [
+        #  G18HN::Step::CompExchange,
+        #  G18HN::Step::Frankfurt,
+        # ], round_num: round_num)
+        # end
+
         def national_hexes(corporation_id)
           self.class::NATIONAL_REGION_HEXES[corporation_id].dup
         end
 
         def operating_right(corporation)
+          # im feld corporations stehen die einzelnen konzessionen (pro konzession eine ability). 
+          # diese müssen ausgelesen werden und dann erfolgt der Abgleich hex_operating_rights?
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any? { |ability| ability.corporations }
+          corporation.all_abilities.any?(&:corporations)
         end
 
         def operating_rights(entity)

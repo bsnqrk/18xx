@@ -10,7 +10,6 @@ module Engine
           super
           # display consession as an ability on corp card (condider idea of using type of "company" for consession)
           @consession = ''
-
         end
       end
     end

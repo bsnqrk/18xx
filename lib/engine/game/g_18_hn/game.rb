@@ -60,7 +60,7 @@ module Engine
           'DAR' => %w[f11 F17 G12 G14 G16 G18 H11 H13 H15 H17 I12 I14 K4 K6 K8 K10 K12 K14 L5 L7 L9 L11 L13 M6 M8 M10 M12 N7 N9
                       N11 N13 O12],
           'NAS' => %w[F5 F7 F9 F11 G4 G6 G8 H3 H5 H7 H9 I4 I6 I8 J5 J7 J9],
-          'FLB' => %w[J11 J13],
+
         }.freeze
 
         MARKET = [
@@ -188,6 +188,9 @@ module Engine
             ],
           },
         ].freeze
+        def corporation_show_individual_reserved_shares?
+          false
+        end
 
         def umtausch?(entity)
           umtausch.include?(entity)
@@ -353,11 +356,6 @@ module Engine
           end
         end
 
-        def exchange_order
-          # order = coal_minor_exchange_order
-          order
-        end
-
         def setup_preround
           # Make sure the start player order is randomized
           @players.sort_by! { rand }
@@ -423,19 +421,19 @@ module Engine
           ], round_num: round_num)
         end
 
-        # def exchange_round(round_num)
-        # G18HN::Round::Exchange.new(self, [
-        #  G18HN::Step::CompExchange,
-        #  G18HN::Step::Frankfurt,
-        # ], round_num: round_num)
-        # end
+        #        def exchange_round(round_num)
+        #        G18HN::Round::Exchange.new(self, [
+        #      #  G18HN::Step::CompExchange,
+        #     Engine::Step::SpecialTrack,
+        #     ], round_num: round_num)
+        #   end
 
         def national_hexes(corporation_id)
           self.class::NATIONAL_REGION_HEXES[corporation_id].dup
         end
 
         def operating_right(corporation)
-          # im feld corporations stehen die einzelnen konzessionen (pro konzession eine ability). 
+          # im feld corporations stehen die einzelnen konzessionen (pro konzession eine ability).
           # diese müssen ausgelesen werden und dann erfolgt der Abgleich hex_operating_rights?
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any?(&:corporations)
@@ -446,25 +444,6 @@ module Engine
           rights = self.class::CORPORATIONS_OPERATING_RIGHTS[entity.id]
           corporation_rights = rights.is_a?(Array) ? rights.dup : [rights]
           corporation_rights.uniq
-        end
-
-        def corporation_token_rights!(corporation)
-          return if !corporation?(corporation) || !corporation.floated?
-
-          corporation.placed_tokens.dup.each do |token|
-            next if hex_operating_rights?(corporation, token.hex)
-
-            next_token = corporation.placed_tokens.last
-            @log << "#{corporation.name} doesn't have operations right to the hex #{token.hex.name}, it's token "\
-                    ' comes back to the charter'
-            token.remove!
-            next if token == next_token
-
-            price = token.price
-            token.price = next_token.price
-            next_token.price = price
-            corporation.tokens.sort_by!(&:price)
-          end
         end
 
         def hex_operating_rights?(entity, hex)

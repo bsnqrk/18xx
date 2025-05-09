@@ -3,7 +3,7 @@
 require_relative 'meta'
 require_relative '../base'
 require_relative '../../game_error'
-require_relative '../g_1856/game'
+# require_relative '../g_1856/game'
 
 module Engine
   module Game

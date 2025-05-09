@@ -17,9 +17,11 @@ module Engine
             when '921'
               corp = @game.company_by_id('FL')
               corp.revenue += 10
+              @log << 'FL revenue +10'
             when '922'
               corp = @game.company_by_id('FL')
               corp.revenue += 10
+              @log << 'FL revenue +10'
             when '923'
               corp = @game.company_by_id('FL')
               corp.revenue += 10

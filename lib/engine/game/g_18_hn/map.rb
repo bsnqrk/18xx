@@ -328,7 +328,7 @@ module Engine
             ['J3'] => 'offboard=revenue:yellow_30|green_50|brown_60,groups:Rheinland,hide:1;path=a:5,b:_0;border=edge:2',
           },
           green: {
-            ['I10'] => 'town=revenue:0;upgrade=cost:40,terrain:mountain',
+            ['I10'] => 'town=revenue:0;upgrade=cost:40,terrain:mountain;label=Hom',
           },
           brown: {
             ['G10'] => 'city=revenue:yellow_20|green_30|brown_40;path=a:2,b:_0;path=a:4,b:_0;path=a:6,b:_0',

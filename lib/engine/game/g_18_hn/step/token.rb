@@ -13,18 +13,18 @@ module Engine
           end
 
           def available_hex(entity, hex)
-            return nil if @game.corporation?(entity) && !@game.hex_operating_rights?(entity, hex)
+            return nil unless @game.hex_operating_rights?(entity, hex)
 
             super
           end
-          
+
           def process_place_token(action)
             entity = action.entity
             hex = action.city.hex
-            token = action.token
-            if @game.corporation?(entity) && !@game.hex_operating_rights?(entity, hex)
+            unless @game.hex_operating_rights?(entity, hex)
               raise GameError, 'Cannot place token without operating rights in the selected region'
             end
+
             super
           end
         end

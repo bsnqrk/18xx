@@ -40,14 +40,15 @@ module Engine
         HOME_TOKEN_TIMING = :operate
 
         RIGHT_COST = 40
+        LOCAL_TRAIN = 'L'
 
         CORPORATIONS_OPERATING_RIGHTS = {
-          'FWN' => 'KAS',
+          'FWN' => %w[KAS WAL],
           'FHB' => 'KAS',
           'LTB' => 'NAS',
           'WEG' => 'NAS',
-          'MWB' => 'KAS',
-          'WLB' => 'WAL',
+          'MWB' => %w[KAS DAR],
+          'WLB' => %w[WAL KAS],
           'SB' => 'DAR',
           'HLB' => 'DAR',
           'MNB' => 'DAR',
@@ -56,11 +57,11 @@ module Engine
 
         NATIONAL_REGION_HEXES = {
           'KAS' => %w[A18 B17 C16 C18 C20 D17 D19 D21 E14 E16 E18 E20 F13 F15 F19 F21 G20 H19 I16 I18 J15],
-          'WAL' => %w[B15 C12 C14 D13],
+          'WAL' => %w[B15 C12 C14 D13 D15],
           'DAR' => %w[f11 F17 G12 G14 G16 G18 H11 H13 H15 H17 I12 I14 K4 K6 K8 K10 K12 K14 L5 L7 L9 L11 L13 M6 M8 M10 M12 N7 N9
                       N11 N13 O12],
           'NAS' => %w[F5 F7 F9 F11 G4 G6 G8 H3 H5 H7 H9 I4 I6 I8 J5 J7 J9],
-
+          'ALL' => %w[B11 B19 E10 E22 F23 G22 G2 G10 J3 J11 J13 K16 N5 O8 O10],
         }.freeze
 
         MARKET = [
@@ -413,8 +414,8 @@ module Engine
             G18HN::Step::SpecialBuy,
             G18HN::Step::Track,
             Engine::Step::SpecialTrack,
-            Engine::Step::Token,
-            Engine::Step::Route,
+            G18HN::Step::Token,
+            G18HN::Step::Route,
             Engine::Step::Dividend,
             Engine::Step::DiscardTrain,
             Engine::Step::BuyTrain,
@@ -437,6 +438,7 @@ module Engine
           # diese müssen ausgelesen werden und dann erfolgt der Abgleich hex_operating_rights?
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any?(&:corporations)
+          #          corporation.abilities.flat_map { |a| a.corporations.any? }
         end
 
         def operating_rights(entity)
@@ -451,11 +453,23 @@ module Engine
           nationals.any? { |national| national_hexes(national).include?(hex.name) }
         end
 
+        def check_distance(route, visits)
+          entity = route.corporation
+
+          unless visits_operating_rights?(entity, visits)
+            raise GameError, 'The director need operating rights to operate in the selected regions'
+          end
+
+          super
+        end
+
         def visits_operating_rights?(entity, visits)
           nationals = operating_rights(entity)
 
           count = visits.count do |v|
-            nationals.any? { |national| national_hexes(national).include?(v.hex.name) }
+            nationals.any? do |national|
+              national_hexes(national).include?(v.hex.name) || national_hexes('ALL').include?(v.hex.name)
+            end
           end
 
           count == visits.size

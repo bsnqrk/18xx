@@ -40,7 +40,7 @@ module Engine
         HOME_TOKEN_TIMING = :operate
 
         RIGHT_COST = 40
-        LOCAL_TRAIN = 'L'
+        MUST_BUY_TRAIN = :always
 
         CORPORATIONS_OPERATING_RIGHTS = {
           'FWN' => %w[KAS WAL],
@@ -57,6 +57,7 @@ module Engine
 
         NATIONAL_REGION_HEXES = {
           'KAS' => %w[A18 B17 C16 C18 C20 D17 D19 D21 E14 E16 E18 E20 F13 F15 F19 F21 G20 H19 I16 I18 J15],
+          'HKC' => %w[A18 B17 C16 C18 C20 D17 D19 D21 E14 E16 E18 E20 F13 F15 F19 F21 G20 H19 I16 I18 J15],
           'WAL' => %w[B15 C12 C14 D13 D15],
           'DAR' => %w[f11 F17 G12 G14 G16 G18 H11 H13 H15 H17 I12 I14 K4 K6 K8 K10 K12 K14 L5 L7 L9 L11 L13 M6 M8 M10 M12 N7 N9
                       N11 N13 O12],
@@ -437,7 +438,7 @@ module Engine
           # im feld corporations stehen die einzelnen konzessionen (pro konzession eine ability).
           # diese müssen ausgelesen werden und dann erfolgt der Abgleich hex_operating_rights?
           # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
-          corporation.all_abilities.any?(&:corporations)
+          corporation.all_abilities.select(&:corporations)
           #          corporation.abilities.flat_map { |a| a.corporations.any? }
         end
 
@@ -473,6 +474,50 @@ module Engine
           end
 
           count == visits.size
+        end
+        # modify to include variable value cities and route bonus
+        
+        def revenue_for(route, stops)
+          stops.sum { |stop| stop.route_revenue(route.phase, route.train) } +
+            connection_bonus(route, stops) 
+
+        end
+
+        def connection_bonus(route, _stops)
+          visited_location_names = route.visited_stops.map { |stop| stop.tile.location_name }.compact
+          return 0 if visited_location_names.count < 2
+
+          LOGGER.debug { "connection_bonus >> visited_location_names: #{visited_location_names}" }
+          revenue = 0
+          revenue += 40 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Südwestfalen')
+          revenue += 80 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Ostwestfalen')
+          revenue += 80 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Hannover')
+          revenue += 70 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Thüringen')
+          revenue += 60 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Franken')
+          revenue += 40 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Baden')
+          revenue += 30 if visited_location_names.include?('Rheinland') && visited_location_names.include?('Pfalz')
+          revenue += 40 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Ostwestfalen')
+          revenue += 40 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Hannover')
+          revenue += 40 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Thüringen')
+          revenue += 40 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Franken')
+          revenue += 50 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Baden')
+          revenue += 40 if visited_location_names.include?('Südwestfalen') && visited_location_names.include?('Pfalz')
+          revenue += 30 if visited_location_names.include?('Ostwestfalen') && visited_location_names.include?('Hannover')
+          revenue += 40 if visited_location_names.include?('Ostwestfalen') && visited_location_names.include?('Thüringen')
+          revenue += 70 if visited_location_names.include?('Ostwestfalen') && visited_location_names.include?('Franken')
+          revenue += 80 if visited_location_names.include?('Ostwestfalen') && visited_location_names.include?('Baden')
+          revenue += 80 if visited_location_names.include?('Ostwestfalen') && visited_location_names.include?('Pfalz')
+          revenue += 30 if visited_location_names.include?('Hannover') && visited_location_names.include?('Thüringen')
+          revenue += 60 if visited_location_names.include?('Hannover') && visited_location_names.include?('Franken')
+          revenue += 80 if visited_location_names.include?('Hannover') && visited_location_names.include?('Baden')
+          revenue += 80 if visited_location_names.include?('Hannover') && visited_location_names.include?('Pfalz')
+          revenue += 50 if visited_location_names.include?('Thüringen') && visited_location_names.include?('Franken')
+          revenue += 50 if visited_location_names.include?('Thüringen') && visited_location_names.include?('Baden')
+          revenue += 60 if visited_location_names.include?('Thüringen') && visited_location_names.include?('Pfalz')
+          revenue += 30 if visited_location_names.include?('Franken') && visited_location_names.include?('Baden')
+          revenue += 40 if visited_location_names.include?('Franken') && visited_location_names.include?('Pfalz')
+          revenue += 20 if visited_location_names.include?('Baden') && visited_location_names.include?('Pfalz')
+          revenue
         end
       end
     end

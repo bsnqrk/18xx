@@ -264,11 +264,12 @@ module Engine
             reserved_shares: [10],
             coordinates: 'L11',
             color: :gray,
+            destination_coordinates: %w[M12 N13 O12],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Darmstadt Concession',
-                corporations: ['DAR'],
+                corporations: 'DAR',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -285,11 +286,12 @@ module Engine
             reserved_shares: [10],
             coordinates: 'N11',
             color: :blue,
+            destination_coordinates: %w[O10 N11 L11 J11 J13],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Darmstadt Concession',
-                corporations: ['DAR'],
+                corporations: 'DAR',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -305,11 +307,12 @@ module Engine
             coordinates: 'K8',
             color: :white,
             text_color: 'black',
+            destination_coordinates: %w[J3 G2 K4 K8 N5 O8],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Darmstadt Concession',
-                corporations: ['DAR'],
+                corporations: 'DAR',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -328,7 +331,7 @@ module Engine
               {
                 type: 'exchange',
                 description: 'Darmstadt Concession',
-                corporations: ['DAR'],
+                corporations: 'DAR',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -346,12 +349,13 @@ module Engine
             coordinates: 'J9',
             color: :'#ADD8E6',
             text_color: :green,
+            destination_coordinates: %w[J9 J5 J3 G2],
             commodities: 'NAS',
             abilities: [
               {
                 type: 'exchange',
                 description: 'Nassau Concession',
-                corporations: ['NAS'],
+                corporations: 'NAS',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -367,11 +371,12 @@ module Engine
             coordinates: 'H7',
             color: :orange,
             text_color: 'black',
+            destination_coordinates: %w[J3 G2 H7 G10],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Nassau Concession',
-                corporations: ['NAS'],
+                corporations: 'NAS',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -389,11 +394,12 @@ module Engine
             reserved_shares: [10],
             city: 0,
             color: :purple,
+            destination_coordinates: %w[G20 E18],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Kassel Concession',
-                corporations: ['KAS'],
+                corporations: 'KAS',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -408,11 +414,12 @@ module Engine
             tokens: [0, 40, 100],
             coordinates: 'F13',
             color: :red,
+            destination_coordinates: %w[F13 G12 J11],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Kassel Concession',
-                corporations: ['KAS'],
+                corporations: 'KAS',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -429,13 +436,14 @@ module Engine
             ipo_shares: [20, 10, 10, 10, 10, 10, 10, 10],
             reserved_shares: [10],
             city: 0,
+            destination_coordinates: %w[B15 C14 D15],
             color: :yellow,
             text_color: :black,
             abilities: [
               {
                 type: 'exchange',
                 description: 'Waldeck Concession',
-                corporations: ['WAL'],
+                corporations: 'WAL',
                 when: 'exchange',
                 from: 'reserved',
               },
@@ -450,11 +458,12 @@ module Engine
             tokens: [0, 40, 100],
             coordinates: 'C18',
             color: :lightgreen,
+            destination_coordinates: %w[A18 B17 C18 D17],
             abilities: [
               {
                 type: 'exchange',
                 description: 'Kassel Concession',
-                corporations: ['KAS'],
+                corporations: 'KAS',
                 when: 'exchange',
                 from: 'reserved',
               },

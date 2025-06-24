@@ -49,7 +49,7 @@ module Engine
             color: nil,
           },
           {
-            name: 'BG Rheinbrücken',
+            name: 'Baugesellschaft Rheinbrücken',
             sym: 'BR',
             value: 40,
             revenue: 10,

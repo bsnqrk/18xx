@@ -242,27 +242,22 @@ module Engine
         end
 
         def nassau?(corporation)
-          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any? { |ability| ability.description.include?('Nassau') }
         end
 
         def darmstadt?(corporation)
-          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any? { |ability| ability.description.include?('Darmstadt') }
         end
 
         def kassel?(corporation)
-          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any? { |ability| ability.description.include?('Kassel') }
         end
 
         def waldeck?(corporation)
-          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any? { |ability| ability.description.include?('Waldeck') }
         end
 
         def frankfurt?(corporation)
-          # abilities will return an array if many or an Ability if one. [*foo(bar)] gets around that
           corporation.all_abilities.any? { |ability| ability.description.include?('Frankfurt') }
         end
 
@@ -395,21 +390,6 @@ module Engine
             end
         end
 
-        #         def setup_destinations
-        #           @corporations.each do |c|
-        #             next unless c.destination_coordinates
-        #
-        #             dest_hex = hex_by_id(c.destination_coordinates)
-        #             ability = Ability::Base.new(
-        #               type: 'base',
-        #               description: "Destination: #{dest_hex.location_name} (#{dest_hex.name})",
-        #             )
-        #             c.add_ability(ability)
-        #
-        #             dest_hex.assign!(c)
-        #           end
-        #         end
-
         def operating_round(round_num)
           Round::Operating.new(self, [
             G18HN::Step::SpecialBuy,
@@ -422,13 +402,6 @@ module Engine
             Engine::Step::BuyTrain,
           ], round_num: round_num)
         end
-
-        #        def exchange_round(round_num)
-        #        G18HN::Round::Exchange.new(self, [
-        #      #  G18HN::Step::CompExchange,
-        #     Engine::Step::SpecialTrack,
-        #     ], round_num: round_num)
-        #   end
 
         def national_hexes(corporation_id)
           self.class::NATIONAL_REGION_HEXES[corporation_id].dup

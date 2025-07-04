@@ -17,6 +17,14 @@ module Engine
             'Attach mail train to another train'
           end
 
+          def help
+            return unless @game.owns_mail_train?(current_entity)
+            return unless attachable_trains(current_entity).empty?
+
+            "#{current_entity.id} owns a mail train but does not own any " \
+              'broad gauge trains that it can be attached to.'
+          end
+
           def choices
             attachable_trains(current_entity).to_h do |train|
               [train.id, "#{train.name} train"]
@@ -37,10 +45,20 @@ module Engine
             "#{train.name} + Mail"
           end
 
+          def log_extra_revenue(entity, extra_revenue)
+            return unless extra_revenue&.nonzero?
+
+            @log << "#{entity.name} receives " \
+                    "#{@game.format_revenue_currency(extra_revenue)} " \
+                    'revenue from mines and ports.'
+          end
+
           private
 
           def choosing?(corporation)
-            @game.owns_mail_train?(corporation) && !mail_train_attached?(corporation)
+            @game.owns_mail_train?(corporation) &&
+              !mail_train_attached?(corporation) &&
+              !attachable_trains(corporation).empty?
           end
 
           # The trains that a mail train can be attached to.

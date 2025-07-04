@@ -72,6 +72,7 @@ module Engine
             @log << "#{corporation.name} receives a free S3 train"
             @game.buy_train(corporation, train, :free)
             @depot.remove_train(train)
+            add_ship_revenue(@game.p4)
             train.buyable = true
             train.reserved = true
             ability.use!
@@ -88,8 +89,8 @@ module Engine
             [1, entity.cash]
           end
 
-          def needed_cash(entity)
-            cheapest_train_price(entity)
+          def needed_cash(_entity)
+            cheapest_train_price(current_entity)
           end
 
           def process_buy_train(action)
